@@ -29,7 +29,7 @@ Le prix, la localisation, le temps d'accès, la disponibilité du service
 
 ## Transfert de données entre deux entrepôts.
 Il est possible de faire des réplications sur différentes régions (CrossRegionReplication).
-Pour transferer il y a 3 manières:
+Pour transférer il y a 3 manières:
 - La voie classique par Internet.
 - TransfertAcceleration : 
 Le transfert des données se fait de manière sécurisé à travers le Cloud appelé Amazon's CloudFront. La donnée est transférer sur une localisation plus proche de la destination puis la donnée est routé dans une bucket sur un chemin optimisé.
@@ -38,12 +38,12 @@ cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
  
  La version **gratuite** donne accès à :
  - 5GB de stockage 
--  20000 requetes de récupération  
-- -2000 requete de stockage  
+-  20000 requetes de récupération  (get)
+- -2000 requete de stockage  (put)
 - -15 GB de transfert chaque mois pour 1 an.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU3ODcxMTcyMywxMTE0Njg0NDU2LDMyOD
-E5OTA4NSwzMTQyMzI0NjEsMTAyOTA3MTQxNywtMzMwODE5Njk3
-LC02NTc2NTAwODddfQ==
+eyJoaXN0b3J5IjpbNDMwNjk0NTUwLDExMTQ2ODQ0NTYsMzI4MT
+k5MDg1LDMxNDIzMjQ2MSwxMDI5MDcxNDE3LC0zMzA4MTk2OTcs
+LTY1NzY1MDA4N119
 -->
