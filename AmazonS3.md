@@ -10,8 +10,9 @@ Avantage : sécurisé durable et des objets scalable.
 	- Versionning
 -Durable :
 	-Vérification de l'intégrité des donné via un checksum.
-	Si une donnée est corrompu, S3 va chercher une réplique de la donnée
+	Si une donnée est corrompu, S3 va chercher une réplique de la donnée.
+	-Vérifie durant le stockage ou la récuparation de la donnée, S3 vérifie le traffic de 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM3NzkyNDM5NSwtNjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbLTE0OTY1OTI0NCwtNjU3NjUwMDg3XX0=
 -->
