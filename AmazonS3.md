@@ -24,7 +24,9 @@ selon le nombre d'accès  à ces données il y a :
 - Amazon Glacier :  données très peu  récupérer pas besoin de rapidité.
 
 ![s3 storage classes - aws s3 tutorial - edureka](https://d1jnx9ba8s6j9r.cloudfront.net/blog/wp-content/uploads/2016/10/image-528x169.png)
+Organisation des données S3 par Bucket.
+Les données S3 sont organisés en unité logique appellé bucket.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcxNzcyMjI0MCwtNjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbNjEyNzEwODQ1LC02NTc2NTAwODddfQ==
 -->
