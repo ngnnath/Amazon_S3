@@ -5,11 +5,11 @@ S3 est une base donnée orienté pour les application. Elle permet de prendre en
 Avantage : sécurisé durable et des objets scalable.
 
 - Sécurisé  : 
-	-  Les données sont crypté soit du côté client soit du coté serveur.
+	-  Les données sont cryptés soit du côté client soit du coté serveur.
 	- Réplication des données
 	- Versionning
 -Durable:
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODI0ODI5NjMyLC02NTc2NTAwODddfQ==
+eyJoaXN0b3J5IjpbMTI3ODUzNDI1NSwtNjU3NjUwMDg3XX0=
 -->
