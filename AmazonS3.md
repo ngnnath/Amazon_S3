@@ -1,9 +1,8 @@
 # AmazonS3
 
-Presentation 
+**Presentation** 
 S3 est une base donnée orienté pour les application. Elle permet de prendre en compte de grande capacité. 
 Avantage : sécurisé durable et des objets scalable.
-
 - Sécurisé  : 
 	-  Les données sont cryptés soit du côté client soit du coté serveur.
 	- Réplication des données
@@ -14,11 +13,10 @@ Avantage : sécurisé durable et des objets scalable.
 	-Vérifie durant le stockage ou la récuparation de la donnée, S3 vérifie les packets des données sur le réseau .
 - Scalable selon la donnée à stocker. 
 
-Type de données stocké :
+**Type de données stocké :**
 Tous types de données dans n'importe quelle format
-selon le nombre d'accès  à ces données il y a :
 
-**3  classes de stockage :**
+**3  types de stockage selon l'usage des données:**
 - Amazon S3 standard  pour un accès frequent à la donnée haute disponibilité
 - Amazon S3 standard pour un accès non fréquent à la donnée comme les archives et dont on a besoin quand meme un accès rapide
 - Amazon Glacier :  données très peu  récupérer pas besoin de rapidité. 
@@ -43,7 +41,7 @@ cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU1MjA0NDU4MywxMTE0Njg0NDU2LDMyOD
+eyJoaXN0b3J5IjpbLTc4NTA2OTUyMywxMTE0Njg0NDU2LDMyOD
 E5OTA4NSwzMTQyMzI0NjEsMTAyOTA3MTQxNywtMzMwODE5Njk3
 LC02NTc2NTAwODddfQ==
 -->
