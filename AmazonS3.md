@@ -32,10 +32,13 @@ Il faut créer d'abord un bucket avant de pousser des données dans S3.
 Choix de stockage de la donnée.
 Le prix, la localisation, le temps d'accès, la disponibilité du service
 
-Transfert de donnes
+Transfert de données entre deux entrepôts.
 Il est possible de faire des réplications sur différentes régions (CrossRegionReplication).
-Pour t
+Pour transferer il y a 3 manières:
+- La voie classique par Internet.
+- TransfertAcceleration : 
+Le transfert des données se fait de manière sécurisé à travers le Cloud 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQwMDU1MzM3NCwtMzMwODE5Njk3LC02NT
-c2NTAwODddfQ==
+eyJoaXN0b3J5IjpbOTUxMDU4NzUsLTMzMDgxOTY5NywtNjU3Nj
+UwMDg3XX0=
 -->
