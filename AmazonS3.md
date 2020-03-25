@@ -29,7 +29,8 @@ Les données S3 sont organisés en unité logique appellé bucket.
 Un bucket contient une donnée et une métadata.
 Il faut créer d'abord un bucket avant de pousser des données dans S3.
 
-
+Choix de stockage de la donnée.
+Le prix, la localisation, le temps d'accès, la disponibilité du service
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0NzY5NTEzLC02NTc2NTAwODddfQ==
+eyJoaXN0b3J5IjpbLTMzMDgxOTY5NywtNjU3NjUwMDg3XX0=
 -->
