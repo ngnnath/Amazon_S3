@@ -21,7 +21,7 @@ selon le nombre d'accès  à ces données il y a :
 3  classes de stockage :
 Amazon S3 standard  pour un accès frequent à la donnée haute disponibilité
 Amazon S3 standard pour un accès non fréquent à la donnée comme les archives et dont on a besoin quand meme un accès rapide
-Amazon Glacier :  Pour des données dont la récupération de
+Amazon Glacier :  données très peu  récupérer pas besoin de haute 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NTQ4MzEyNjUsLTY1NzY1MDA4N119
+eyJoaXN0b3J5IjpbLTE2NzAzNjY3NzksLTY1NzY1MDA4N119
 -->
