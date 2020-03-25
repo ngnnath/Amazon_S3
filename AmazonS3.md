@@ -23,6 +23,7 @@ selon le nombre d'accès  à ces données il y a :
 - Amazon S3 standard pour un accès non fréquent à la donnée comme les archives et dont on a besoin quand meme un accès rapide
 - Amazon Glacier :  données très peu  récupérer pas besoin de rapidité.
 - ![panda](https://images.app.goo.gl/YVJ7GEcupTwDj6Hu9)
+- ![image](https://drive.google.com/uc?export=view&id=<FILE_ID>)`
 - 
 ## Organisation des données S3 par Bucket.
 Les données S3 sont organisés en unité logique appellé bucket.
@@ -45,7 +46,7 @@ cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTk0OTU3MzE2LDExMTQ2ODQ0NTYsMzI4MT
-k5MDg1LDMxNDIzMjQ2MSwxMDI5MDcxNDE3LC0zMzA4MTk2OTcs
-LTY1NzY1MDA4N119
+eyJoaXN0b3J5IjpbLTIxNDI2MTIwMDMsMTExNDY4NDQ1NiwzMj
+gxOTkwODUsMzE0MjMyNDYxLDEwMjkwNzE0MTcsLTMzMDgxOTY5
+NywtNjU3NjUwMDg3XX0=
 -->
