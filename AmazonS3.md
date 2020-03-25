@@ -38,9 +38,9 @@ Pour transferer il y a 3 manières:
 - La voie classique par Internet.
 - TransfertAcceleration : 
 Le transfert des données se fait de manière sécurisé à travers le Cloud appelé Amazon's CloudFront. La donnée est transférer sur une localisation plus proche de la destination puis la donnée est routé dans une bucket sur un chemin optimisé.
-- La méthode Snowball  La donnée est transfert de manière physique. Amazon envoie un support afin de transférer les données dessus puis celui ci est envoyé au nouveau siège. Cette méthode est pri
+- La méthode Snowball  La donnée est transfert de manière physique. Amazon envoie un support afin de transférer les données dessus puis celui ci est envoyé au nouveau siège. Cette méthode est privilègié pour de gros quantités de données à déplacer.  Le temps de traitement pour cette méthode est de  à centr
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5ODg2MzUzOTQsLTMzMDgxOTY5NywtNj
-U3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbMTgxOTcwNDYxLC0zMzA4MTk2OTcsLTY1Nz
+Y1MDA4N119
 -->
