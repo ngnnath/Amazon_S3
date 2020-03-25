@@ -19,7 +19,8 @@ Tous types de données dans n'importe quelle format
 selon le nombre d'accès  à ces données il y a :
 
 3  classes de stockage :
-
+Amazon S3 standard  pour un accès frequent à la donnée
+Amazon S3 standar pou
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjAyNTk0MDM3MCwtNjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbMTgyNzg3MTMxNSwtNjU3NjUwMDg3XX0=
 -->
