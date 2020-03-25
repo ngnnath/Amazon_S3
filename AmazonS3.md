@@ -31,6 +31,8 @@ Il faut créer d'abord un bucket avant de pousser des données dans S3.
 
 Choix de stockage de la donnée.
 Le prix, la localisation, le temps d'accès, la disponibilité du service
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMzMDgxOTY5NywtNjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbMTk0MzQzNjc5NywtMzMwODE5Njk3LC02NT
+c2NTAwODddfQ==
 -->
