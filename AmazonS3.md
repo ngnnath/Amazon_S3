@@ -13,8 +13,7 @@ Avantage : sécurisé durable et des objets scalable.
 	-Vérifie durant le stockage ou la récuparation de la donnée, S3 vérifie les packets des données sur le réseau .
 - Scalable selon la donnée à stocker. 
 
-**Type de données stocké :**
-Tous types de données dans n'importe quelle format
+Type de données stocké : Tous types de données dans n'importe quelle format
 
 **3  types de stockage selon l'usage des données:**
 - Amazon S3 standard  pour un accès frequent à la donnée haute disponibilité
@@ -36,12 +35,15 @@ Pour transferer il y a 3 manières:
 Le transfert des données se fait de manière sécurisé à travers le Cloud appelé Amazon's CloudFront. La donnée est transférer sur une localisation plus proche de la destination puis la donnée est routé dans une bucket sur un chemin optimisé.
 cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - La méthode Snowball  La donnée est transfert de manière physique. Amazon envoie un support afin de transférer les données dessus puis celui ci est envoyé au nouveau siège. Cette méthode est privilègié pour de gros quantités de données à déplacer.  Le temps de traitement pour cette méthode est de 5 à 7 jours.
- La version gratuite 5 donne accès à 5GB de stockage 
--  20000 requetes de récupération  2000 requete de stockage  et 15 GB de transfert chaque mois pour 1 an.
-- 
+ 
+ La version **gratuite** donne accès à :
+ - 5GB de stockage 
+-  20000 requetes de récupération  
+- -2000 requete de stockage  
+- -15 GB de transfert chaque mois pour 1 an.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc4NTA2OTUyMywxMTE0Njg0NDU2LDMyOD
+eyJoaXN0b3J5IjpbLTU3ODcxMTcyMywxMTE0Njg0NDU2LDMyOD
 E5OTA4NSwzMTQyMzI0NjEsMTAyOTA3MTQxNywtMzMwODE5Njk3
 LC02NTc2NTAwODddfQ==
 -->
