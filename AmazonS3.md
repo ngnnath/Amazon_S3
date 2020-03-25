@@ -37,8 +37,10 @@ Il est possible de faire des réplications sur différentes régions (CrossRegio
 Pour transferer il y a 3 manières:
 - La voie classique par Internet.
 - TransfertAcceleration : 
-Le transfert des données se fait de manière sécurisé à travers le Cloud appelé Amazon's CloudFront. La donnée est transférer sur une localisation plus proche de la destination puis la donnée est routé dans une bucket 
+Le transfert des données se fait de manière sécurisé à travers le Cloud appelé Amazon's CloudFront. La donnée est transférer sur une localisation plus proche de la destination puis la donnée est routé dans une bucket sur un chemin optimisé.
+- La méthode Snowball  La donnée est transfert de manière physique. Amazon envoie un equipement afin de transférer les données sur ce support
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk2NjMzNTMzMywtMzMwODE5Njk3LC02NT
+eyJoaXN0b3J5IjpbLTMyNjg4NjA1NiwtMzMwODE5Njk3LC02NT
 c2NTAwODddfQ==
 -->
