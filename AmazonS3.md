@@ -41,9 +41,10 @@ Le transfert des données se fait de manière sécurisé à travers le Cloud app
 cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - La méthode Snowball  La donnée est transfert de manière physique. Amazon envoie un support afin de transférer les données dessus puis celui ci est envoyé au nouveau siège. Cette méthode est privilègié pour de gros quantités de données à déplacer.  Le temps de traitement pour cette méthode est de 5 à 7 jours.
  La version gratuite 5 donne accès à 5GB de stockage 
--  20000 requetes de récupé  2000
+-  20000 requetes de récupération  2000 requete de stockage  et 15 GB de transfert chaque mois pour 1 an.
+- 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk1ODY2NzUzMSwtMzMwODE5Njk3LC02NT
+eyJoaXN0b3J5IjpbMTAyOTA3MTQxNywtMzMwODE5Njk3LC02NT
 c2NTAwODddfQ==
 -->
