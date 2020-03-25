@@ -18,21 +18,19 @@ Type de données stocké :
 Tous types de données dans n'importe quelle format
 selon le nombre d'accès  à ces données il y a :
 
-3  classes de stockage :
+**3  classes de stockage :**
 - Amazon S3 standard  pour un accès frequent à la donnée haute disponibilité
 - Amazon S3 standard pour un accès non fréquent à la donnée comme les archives et dont on a besoin quand meme un accès rapide
-- Amazon Glacier :  données très peu  récupérer pas besoin de rapidité.
-- 
-![image](https://resize-parismatch.lanmedia.fr/img/var/news/storage/images/paris-match/animal-story/un-nouveau-bebe-panda-est-ne-au-zoo-de-kuala-lumpur-1526057/24886079-1-fre-FR/Un-nouveau-bebe-panda-est-ne-au-zoo-de-Kuala-Lumpur.jpg)
+- Amazon Glacier :  données très peu  récupérer pas besoin de rapidité. 
+![image](https://i.ibb.co/jVf7dTt/image-528x169.png)
 ## Organisation des données S3 par Bucket.
 Les données S3 sont organisés en unité logique appellé bucket.
 Un bucket contient une donnée et une métadata.
 Il faut créer d'abord un bucket avant de pousser des données dans S3.
-
 Choix de stockage de la donnée.
 Le prix, la localisation, le temps d'accès, la disponibilité du service
 
-Transfert de données entre deux entrepôts.
+## Transfert de données entre deux entrepôts.
 Il est possible de faire des réplications sur différentes régions (CrossRegionReplication).
 Pour transferer il y a 3 manières:
 - La voie classique par Internet.
@@ -45,7 +43,7 @@ cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODAzNTc0NTUsMTExNDY4NDQ1NiwzMjgxOT
-kwODUsMzE0MjMyNDYxLDEwMjkwNzE0MTcsLTMzMDgxOTY5Nywt
-NjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbMTU1MjA0NDU4MywxMTE0Njg0NDU2LDMyOD
+E5OTA4NSwzMTQyMzI0NjEsMTAyOTA3MTQxNywtMzMwODE5Njk3
+LC02NTc2NTAwODddfQ==
 -->
