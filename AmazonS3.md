@@ -15,8 +15,11 @@ Avantage : sécurisé durable et des objets scalable.
 - Scalable selon la donnée à stocker. 
 
 Type de données stocké :
-Tous type de données dans n'importe quelle format
+Tous types de données dans n'importe quelle format
+selon le nombre d'accès  à ces données il y a :
+
+3  classes de stockage :
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjI0ODk0MTk2LC02NTc2NTAwODddfQ==
+eyJoaXN0b3J5IjpbMjAyNTk0MDM3MCwtNjU3NjUwMDg3XX0=
 -->
