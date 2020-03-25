@@ -8,13 +8,15 @@ Avantage : sécurisé durable et des objets scalable.
 	-  Les données sont cryptés soit du côté client soit du coté serveur.
 	- Réplication des données
 	- Versionning
--Durable :
+- Durable :
 	-Vérification de l'intégrité des donné via un checksum.
 	Si une donnée est corrompu, S3 va chercher une réplique de la donnée.
 	-Vérifie durant le stockage ou la récuparation de la donnée, S3 vérifie les packets des données sur le réseau .
-Scalable selon la donnée à s
-S3 est scalable. 
+- Scalable selon la donnée à stocker. 
+
+Type de données stocké :
+Tous type de données dans n'importe quelle format
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMjQ3ODMyNjAsLTY1NzY1MDA4N119
+eyJoaXN0b3J5IjpbNjI0ODk0MTk2LC02NTc2NTAwODddfQ==
 -->
