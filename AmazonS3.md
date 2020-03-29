@@ -18,12 +18,16 @@ Type de données stocké : Tous types de données dans n'importe quelle format
 **3  types de stockage selon l'usage des données:**
 - Amazon S3 standard  pour un accès frequent à la donnée haute disponibilité
 - Amazon S3 standard pour un accès non fréquent à la donnée comme les archives et dont on a besoin quand meme un accès rapide
-- Amazon Glacier :  données très peu  récupérer pas besoin de rapidité. 
+- Amazon Glacier :  données très peu  récupérer pas besoin de rapidité. Il stocke les données sous forme d'archive sous des vault dont la taille peut atteindre 40 Terabyte
+- Le nom du vault est unique comme les buckets.
 ![image](https://i.ibb.co/jVf7dTt/image-528x169.png)
 ## Organisation des données S3 par Bucket.
 Les données S3 sont organisés en unité logique appellé bucket.
-Un bucket contient une donnée et une métadata.
+Un bucket contient une donnée et une métadata. et une clé qui lui est associé.
 Il faut créer d'abord un bucket avant de pousser des données dans S3.
+Lors de la creation d'un bucket le nom qui lui donnée est unique dans tous les volumes amazon.
+La gestion des accès à ces buckets osnt déterminer par un fichier json appelé bucket Policy.
+Il permet de déterminer précisément les actions autorisés sur un bucket par les utilisateur.
 Choix de stockage de la donnée.
 Le prix, la localisation, le temps d'accès, la disponibilité du service
 
@@ -42,8 +46,14 @@ cette méthode peut transfert jusqu'à 75TB en 1Gb par s.
 - -2000 requete de stockage  (put)
 - -15 GB de transfert chaque mois pour 1 an.
 
+
+Archivage 
+Il est possible d'archiver les données via les LifeCycle Rules. Elle permet de planifier une procedure de sauvegarde (Par exemple de bucket S3 dans le système de donnée Glacier).
+
+ISCSI protole de transfert
+EBS storage
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDMwNjk0NTUwLDExMTQ2ODQ0NTYsMzI4MT
-k5MDg1LDMxNDIzMjQ2MSwxMDI5MDcxNDE3LC0zMzA4MTk2OTcs
-LTY1NzY1MDA4N119
+eyJoaXN0b3J5IjpbLTQyODc2MDI0Nyw0MzA2OTQ1NTAsMTExND
+Y4NDQ1NiwzMjgxOTkwODUsMzE0MjMyNDYxLDEwMjkwNzE0MTcs
+LTMzMDgxOTY5NywtNjU3NjUwMDg3XX0=
 -->
