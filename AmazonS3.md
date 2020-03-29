@@ -1,3 +1,4 @@
+
 # AmazonS3
 
 **Presentation** 
@@ -53,7 +54,7 @@ Il est possible d'archiver les données via les LifeCycle Rules. Elle permet de 
 ISCSI protole de transfert
 EBS storage
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQyODc2MDI0Nyw0MzA2OTQ1NTAsMTExND
-Y4NDQ1NiwzMjgxOTkwODUsMzE0MjMyNDYxLDEwMjkwNzE0MTcs
-LTMzMDgxOTY5NywtNjU3NjUwMDg3XX0=
+eyJoaXN0b3J5IjpbNzYwODg4NTM5LC00Mjg3NjAyNDcsNDMwNj
+k0NTUwLDExMTQ2ODQ0NTYsMzI4MTk5MDg1LDMxNDIzMjQ2MSwx
+MDI5MDcxNDE3LC0zMzA4MTk2OTcsLTY1NzY1MDA4N119
 -->
