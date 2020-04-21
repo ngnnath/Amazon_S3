@@ -4,20 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import javax.ws.rs.core.Response;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -98,7 +99,6 @@ public class S3Controller {
      */
     @RequestMapping(value = "/put/file", method = GET)
     public String putFile(@RequestParam("path") String filepath) throws IOException, URISyntaxException {
-        //InstanceProfileCredentialsProvider credentials = InstanceProfileCredentialsProvider.builder().asyncCredentialUpdateEnabled(true).build();
         Region region = Region.US_EAST_1;
         URI uri = new URI(app.getUrl());
         S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
@@ -123,65 +123,32 @@ public class S3Controller {
         return result;
     }
 
-//    /**
-//     * Get the file
-//     * @param key clé de l'objet à récupérer
-//     * @throws IOException error in DisplayTextStream
-//     */
-//    @RequestMapping(value = "/get/file", method = GET)
-//    public void getFile(@RequestParam("key") String key) throws IOException {
-//
-//        S3Object fullObject = null, objectPortion = null, headerOverrideObject = null;
-//        AWSCredentials credentials = new BasicAWSCredentials(app.getAccessKey(), app.getAccessSecret());
-//        try {
-//            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-//                    .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(app.getUrl(), Regions.US_EAST_1.name()))
-//                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
-//                    .build();
-//
-//            // Get an object and print its contents.
-//            System.out.println("Downloading an object");
-//            fullObject = s3Client.getObject(new GetObjectRequest(app.getBucketname(), key));
-//            System.out.println("Content-Type: " + fullObject.getObjectMetadata().getContentType());
-//            System.out.println("Content: ");
-//            displayTextInputStream(fullObject.getObjectContent());
-//
-//            // Get a range of bytes from an object and print the bytes.
-//            GetObjectRequest rangeObjectRequest = new GetObjectRequest(app.getBucketname(), key)
-//                    .withRange(0, 9);
-//            objectPortion = s3Client.getObject(rangeObjectRequest);
-//            System.out.println("Printing bytes retrieved.");
-//            displayTextInputStream(objectPortion.getObjectContent());
-//
-//            // Get an entire object, overriding the specified response headers, and print the object's content.
-//            ResponseHeaderOverrides headerOverrides = new ResponseHeaderOverrides()
-//                    .withCacheControl("No-cache")
-//                    .withContentDisposition("attachment; filename=example.txt");
-//            GetObjectRequest getObjectRequestHeaderOverride = new GetObjectRequest(app.getBucketname(), key)
-//                    .withResponseHeaders(headerOverrides);
-//            headerOverrideObject = s3Client.getObject(getObjectRequestHeaderOverride);
-//            displayTextInputStream(headerOverrideObject.getObjectContent());
-//        } catch (AmazonServiceException e) {
-//            // The call was transmitted successfully, but Amazon S3 couldn't process
-//            // it, so it returned an error response.
-//            e.printStackTrace();
-//        } catch (SdkClientException e) {
-//            // Amazon S3 couldn't be contacted for a response, or the client
-//            // couldn't parse the response from Amazon S3.
-//            e.printStackTrace();
-//        } finally {
-//            // To ensure that the network connection doesn't remain open, close any open input streams.
-//            if (fullObject != null) {
-//                fullObject.close();
-//            }
-//            if (objectPortion != null) {
-//                objectPortion.close();
-//            }
-//            if (headerOverrideObject != null) {
-//                headerOverrideObject.close();
-//            }
-//        }
-//    }
+    /**
+     * Get the file
+     * @param key clé de l'objet à récupérer
+     * @throws IOException error in DisplayTextStream
+     * @return
+     */
+    @RequestMapping(value = "/get/file", method = GET)
+    public Response getFile(@RequestParam("key") String key) throws URISyntaxException, IOException {
+        String result = "";
+        Region region = Region.US_EAST_1;
+        URI uri = new URI(app.getUrl());
+        S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
+
+
+        ResponseInputStream<GetObjectResponse> s3objectResponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(key).build());
+        displayTextInputStream(s3objectResponse);
+
+        String message = "{\"hello\": \"This is a JSON response\"}";
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(message)
+                .type(String.valueOf(MediaType.APPLICATION_JSON))
+                .build();
+        //return result;
+    }
 
     @RequestMapping(value = "/delete/file", method = GET)
     public String deleteFile(@RequestParam("key") String key) throws URISyntaxException {
@@ -200,4 +167,19 @@ public class S3Controller {
         return result;
     }
 
+
+
+    private static void displayTextInputStream(InputStream input) throws IOException {
+        // Read one text line at a time and display.
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        while (true) {
+            String line = reader.readLine();
+            if (line == null)
+                break;
+
+            System.out.println("    " + line);
+        }
+        System.out.println();
+    }
 }
