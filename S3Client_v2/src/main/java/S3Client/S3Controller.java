@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
-import javax.ws.rs.core.Response;
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -98,29 +99,32 @@ public class S3Controller {
      * @throws IOException exception
      */
     @RequestMapping(value = "/put/file", method = GET)
-    public String putFile(@RequestParam("path") String filepath) throws IOException, URISyntaxException {
+    public ResponseEntity<String> putFile(@RequestParam("path") String filepath) throws IOException, URISyntaxException {
         Region region = Region.US_EAST_1;
         URI uri = new URI(app.getUrl());
         S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
         String keyName = "newFile.txt";
         String uploadFileName = filepath;
-        String result = "";
 
         System.out.println("Uploading a new object to S3 from a file\n");
         File file = new File(uploadFileName);
         byte[] content = "content".getBytes();
-        RequestBody requestBody = RequestBody.fromBytes(content);
         // Upload file
         s3.putObject(PutObjectRequest.builder().bucket(app.getBucketname()).key(keyName)
                 .build(), RequestBody.fromFile(file));
+
 
         // Download file
         GetObjectResponse reponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(keyName).build(),
                 ResponseTransformer.toOutputStream(new ByteArrayOutputStream()));
         if (reponse.sdkHttpResponse().statusCode() == HttpStatus.OK.value()) {
-            result = "Fichier ajouté";
+            JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","Fichier ajouté").build();
+            return ResponseEntity.status(HttpStatus.OK).body(object.toString());
+        }else{
+            JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body", String.valueOf(reponse.sdkHttpResponse().statusText())).build();
+            reponse.sdkHttpResponse().statusCode();
+            return ResponseEntity.status(HttpStatus.OK).body(object.toString());
         }
-        return result;
     }
 
     /**
@@ -129,30 +133,22 @@ public class S3Controller {
      * @throws IOException error in DisplayTextStream
      * @return
      */
-    @RequestMapping(value = "/get/file", method = GET)
-    public Response getFile(@RequestParam("key") String key) throws URISyntaxException, IOException {
+    @RequestMapping(value = "/get/file", method = GET, produces = "application/json")
+    public ResponseEntity<String> getFile(@RequestParam("key") String key) throws URISyntaxException, IOException {
         String result = "";
         Region region = Region.US_EAST_1;
         URI uri = new URI(app.getUrl());
         S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
-
-
         ResponseInputStream<GetObjectResponse> s3objectResponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(key).build());
         displayTextInputStream(s3objectResponse);
+        JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","get it").build();
 
-        String message = "{\"hello\": \"This is a JSON response\"}";
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(message)
-                .type(String.valueOf(MediaType.APPLICATION_JSON))
-                .build();
-        //return result;
+        return ResponseEntity.status(HttpStatus.OK).body(object.toString());
     }
 
     @RequestMapping(value = "/delete/file", method = GET)
-    public String deleteFile(@RequestParam("key") String key) throws URISyntaxException {
-        String result = "";
+    public ResponseEntity<String> deleteFile(@RequestParam("key") String key) throws URISyntaxException {
+        JsonObject object;
         Region region = Region.US_EAST_1;
         URI uri = new URI(app.getUrl());
         S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
@@ -160,11 +156,12 @@ public class S3Controller {
 
         DeleteObjectResponse response = s3.deleteObject(deleteObjectRequest);
         if (response.sdkHttpResponse().statusCode() == HttpStatus.NO_CONTENT.value()) {
-            result = "Delete Done";
+            object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","Fichier supprimé").build();
         } else {
-            result = response.sdkHttpResponse().statusCode() +" "+response.sdkHttpResponse().isSuccessful();
+            object = Json.createObjectBuilder().add("status", HttpStatus.NO_CONTENT.value()).add("body","Aucun document").build();
+
         }
-        return result;
+        return ResponseEntity.status(HttpStatus.OK).body(object.toString());
     }
 
 
