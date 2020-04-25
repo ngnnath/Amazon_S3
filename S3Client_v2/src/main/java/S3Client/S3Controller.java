@@ -22,6 +22,8 @@ import javax.json.JsonObject;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -108,7 +110,7 @@ public class S3Controller {
 
         System.out.println("Uploading a new object to S3 from a file\n");
         File file = new File(uploadFileName);
-        byte[] content = "content".getBytes();
+
         // Upload file
         s3.putObject(PutObjectRequest.builder().bucket(app.getBucketname()).key(keyName)
                 .build(), RequestBody.fromFile(file));
@@ -178,5 +180,60 @@ public class S3Controller {
             System.out.println("    " + line);
         }
         System.out.println();
+    }
+
+
+    /**
+     * Put file on the bucket
+     *
+     * @param filepath file path
+     * @return a string
+     * @throws IOException exception
+     */
+    @RequestMapping(value = "/put/multipart/file", method = GET)
+    public void putFileMultipart(@RequestParam("path") String filepath) throws IOException, URISyntaxException {
+        long partSize =
+                1024; // Set part size to 5 MB.
+        int size = 1024;
+        byte[] buffer = new byte[size];
+        Region region = Region.US_EAST_1;
+        URI uri = new URI(app.getUrl());
+        S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
+        String keyName = "newFile.txt";
+        String uploadFileName = filepath;
+        File file = new File(uploadFileName);
+        try (InputStream in = new FileInputStream(file)) {
+            // First create a multipart upload and get upload id
+            CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
+                    .bucket(app.getBucketname()).key(keyName)
+                    .build();
+            CreateMultipartUploadResponse response = s3.createMultipartUpload(createMultipartUploadRequest);
+            String uploadId = response.uploadId();
+            System.out.println(uploadId);
+            // Upload all the different parts of the object
+            FileInputStream fIn = new FileInputStream(file);
+            FileChannel fChan = fIn.getChannel();
+            long fSize = fChan.size();
+            ByteBuffer mBuf = ByteBuffer.allocate((int) fSize);
+
+            UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(app.getBucketname()).key(keyName)
+                    .uploadId(uploadId)
+                    .partNumber(1).build();
+            String etag1 = s3.uploadPart(uploadPartRequest1, RequestBody.fromInputStream(in,in.available())).eTag();
+            CompletedPart part1 = CompletedPart.builder().partNumber(1).eTag(etag1).build();
+
+            UploadPartRequest uploadPartRequest2 = UploadPartRequest.builder().bucket(app.getBucketname()).key(keyName)
+                    .uploadId(uploadId)
+                    .partNumber(2).build();
+            String etag2 = s3.uploadPart(uploadPartRequest2, RequestBody.fromInputStream(in,in.available())).eTag();
+            CompletedPart part2 = CompletedPart.builder().partNumber(2).eTag(etag2).build();
+            CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder().parts(part1).build();
+            CompleteMultipartUploadRequest completeMultipartUploadRequest =
+                    CompleteMultipartUploadRequest.builder().bucket(app.getBucketname()).key(keyName).uploadId(uploadId)
+                            .multipartUpload(completedMultipartUpload).build();
+            s3.completeMultipartUpload(completeMultipartUploadRequest);
+        }
+
+
     }
 }
