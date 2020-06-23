@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -22,8 +22,8 @@ import javax.json.JsonObject;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -38,6 +38,8 @@ public class S3Controller {
      */
     private static final Logger logger = LoggerFactory.getLogger(S3Controller.class);
 
+
+    private static final int MIN_PART_SIZE = 5000;
     /**
      * Properties of S3.
      */
@@ -46,15 +48,14 @@ public class S3Controller {
     /**
      * credentials.
      */
-    private AwsSessionCredentials awsCreds;
+    private AwsBasicCredentials awsCreds;
 
     @Autowired
     public void setApp(S3Properties app) {
         this.app = app;
-        this.awsCreds = AwsSessionCredentials.create(
+        this.awsCreds = AwsBasicCredentials.create(
                 app.getAccessKey(),
-                app.getAccessSecret(),
-                "");
+                app.getAccessSecret());
     }
 
 
@@ -67,8 +68,9 @@ public class S3Controller {
     public String configuration() {
 
         String appProperties = app.toString();
-        logger.debug("Configuration {}", app);
-        return app.toString();
+        logger.info("Configuration {}", app.getUrl());
+        System.out.println("***********" + app.getUrl());
+        return app.getUrl();
     }
 
     @RequestMapping("/createbucket")
@@ -89,6 +91,8 @@ public class S3Controller {
         CreateBucketResponse result = s3.createBucket(createBucketRequest);
         if (result.sdkHttpResponse().statusCode() == HttpStatus.OK.value()) {
             message = "bucket crée";
+        } else {
+            message = String.valueOf(result.sdkHttpResponse().statusText());
         }
         return message;
     }
@@ -120,9 +124,9 @@ public class S3Controller {
         GetObjectResponse reponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(keyName).build(),
                 ResponseTransformer.toOutputStream(new ByteArrayOutputStream()));
         if (reponse.sdkHttpResponse().statusCode() == HttpStatus.OK.value()) {
-            JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","Fichier ajouté").build();
+            JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body", "Fichier ajouté").build();
             return ResponseEntity.status(HttpStatus.OK).body(object.toString());
-        }else{
+        } else {
             JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body", String.valueOf(reponse.sdkHttpResponse().statusText())).build();
             reponse.sdkHttpResponse().statusCode();
             return ResponseEntity.status(HttpStatus.OK).body(object.toString());
@@ -131,9 +135,10 @@ public class S3Controller {
 
     /**
      * Get the file
+     *
      * @param key clé de l'objet à récupérer
-     * @throws IOException error in DisplayTextStream
      * @return
+     * @throws IOException error in DisplayTextStream
      */
     @RequestMapping(value = "/get/file", method = GET, produces = "application/json")
     public ResponseEntity<String> getFile(@RequestParam("key") String key) throws URISyntaxException, IOException {
@@ -143,7 +148,7 @@ public class S3Controller {
         S3Client s3 = S3Client.builder().endpointOverride(uri).region(region).credentialsProvider(StaticCredentialsProvider.create(this.awsCreds)).build();
         ResponseInputStream<GetObjectResponse> s3objectResponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(key).build());
         displayTextInputStream(s3objectResponse);
-        JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","get it").build();
+        JsonObject object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body", "get it").build();
 
         return ResponseEntity.status(HttpStatus.OK).body(object.toString());
     }
@@ -158,14 +163,13 @@ public class S3Controller {
 
         DeleteObjectResponse response = s3.deleteObject(deleteObjectRequest);
         if (response.sdkHttpResponse().statusCode() == HttpStatus.NO_CONTENT.value()) {
-            object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body","Fichier supprimé").build();
+            object = Json.createObjectBuilder().add("status", HttpStatus.OK.value()).add("body", "Fichier supprimé").build();
         } else {
-            object = Json.createObjectBuilder().add("status", HttpStatus.NO_CONTENT.value()).add("body","Aucun document").build();
+            object = Json.createObjectBuilder().add("status", HttpStatus.NO_CONTENT.value()).add("body", "Aucun document").build();
 
         }
         return ResponseEntity.status(HttpStatus.OK).body(object.toString());
     }
-
 
 
     private static void displayTextInputStream(InputStream input) throws IOException {
@@ -202,6 +206,7 @@ public class S3Controller {
         String keyName = "newFile.txt";
         String uploadFileName = filepath;
         File file = new File(uploadFileName);
+
         try (InputStream in = new FileInputStream(file)) {
             // First create a multipart upload and get upload id
             CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
@@ -209,31 +214,33 @@ public class S3Controller {
                     .build();
             CreateMultipartUploadResponse response = s3.createMultipartUpload(createMultipartUploadRequest);
             String uploadId = response.uploadId();
-            System.out.println(uploadId);
-            // Upload all the different parts of the object
-            FileInputStream fIn = new FileInputStream(file);
-            FileChannel fChan = fIn.getChannel();
-            long fSize = fChan.size();
-            ByteBuffer mBuf = ByteBuffer.allocate((int) fSize);
+            long fileLength = file.length();
+            long filePosition = 0;
+            List<CompletedPart> listPart = new ArrayList<>();
+            if (fileLength < MIN_PART_SIZE) {
+                for (int i = 1; filePosition < fileLength; i++) {
+                    partSize = Math.min(partSize, (fileLength - filePosition));
 
-            UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(app.getBucketname()).key(keyName)
-                    .uploadId(uploadId)
-                    .partNumber(1).build();
-            String etag1 = s3.uploadPart(uploadPartRequest1, RequestBody.fromInputStream(in,in.available())).eTag();
-            CompletedPart part1 = CompletedPart.builder().partNumber(1).eTag(etag1).build();
-
-            UploadPartRequest uploadPartRequest2 = UploadPartRequest.builder().bucket(app.getBucketname()).key(keyName)
-                    .uploadId(uploadId)
-                    .partNumber(2).build();
-            String etag2 = s3.uploadPart(uploadPartRequest2, RequestBody.fromInputStream(in,in.available())).eTag();
-            CompletedPart part2 = CompletedPart.builder().partNumber(2).eTag(etag2).build();
-            CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder().parts(part1).build();
-            CompleteMultipartUploadRequest completeMultipartUploadRequest =
-                    CompleteMultipartUploadRequest.builder().bucket(app.getBucketname()).key(keyName).uploadId(uploadId)
-                            .multipartUpload(completedMultipartUpload).build();
-            s3.completeMultipartUpload(completeMultipartUploadRequest);
+                    UploadPartRequest uploadPartRequest = UploadPartRequest.builder().bucket(app.getBucketname()).key(keyName)
+                            .uploadId(uploadId)
+                            .partNumber(i).build();
+                    String etag = s3.uploadPart(uploadPartRequest, RequestBody.fromInputStream(in, in.available())).eTag();
+                    CompletedPart part = CompletedPart.builder().partNumber(i).eTag(etag).build();
+                    listPart.add(part);
+                }
+                CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder().parts(listPart).build();
+                CompleteMultipartUploadRequest completeMultipartUploadRequest =
+                        CompleteMultipartUploadRequest.builder().bucket(app.getBucketname()).key(keyName).uploadId(uploadId)
+                                .multipartUpload(completedMultipartUpload).build();
+                s3.completeMultipartUpload(completeMultipartUploadRequest);
+            }else{
+                // Upload file
+                s3.putObject(PutObjectRequest.builder().bucket(app.getBucketname()).key(keyName)
+                        .build(), RequestBody.fromFile(file));
+                // Download file
+                GetObjectResponse reponse = s3.getObject(GetObjectRequest.builder().bucket(app.getBucketname()).key(keyName).build(),
+                        ResponseTransformer.toOutputStream(new ByteArrayOutputStream()));
+            }
         }
-
-
     }
 }
